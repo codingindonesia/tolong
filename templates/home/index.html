@@ -1,0 +1,27 @@
+{% extends 'web_template.html' %}
+{% block main %}
+<div class="row">
+<div class="col-lg-4 col-lg-offset-4">
+
+        <h2>Help us save our children</h2>
+        <p>
+            We are launching our mobile application soon to help children from any kind of abuses. You can help us by
+            becoming volunteers. Enter your email and name, we will notify you once we are ready.
+        </p>
+        <div>
+            <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_fullname">Fullname</label>
+                    <input type="text" class="form-control" id="id_fullname" name="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <input type="text" class="form-control" id="id_email" name="email">
+                </div>
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

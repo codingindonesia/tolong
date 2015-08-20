@@ -1,0 +1,110 @@
+{% extends 'main_template.html' %}
+{% block main %}
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>{{ case.title }}</h1>
+            <h4>Type</h4>
+            {% if case.case_type == 'Phy' %}
+                <p>Physical Abuse</p>
+            {% elif case.case_type == 'N' %}
+                <p>Neglect (Penelantaran anak)</p>
+            {% elif case.case_type == 'Psy' %}
+                <p>Psycological Abuse</p>
+            {% elif case.case_type == 'S' %}
+                <p>Sexual Abuse</p>
+            {% else %}
+                <p>Other</p>
+            {% endif %}
+            <h4>Reported at</h4>
+            <p>{{ case.reported_date|date:'Y/d/m H:i:s' }}</p>
+            <h4>What happened</h4>
+            <p>{{ case.description }}</p>
+            <h4>Location</h4>
+            <p>{{ case.location }}</p>
+            {% if not case.location == ''%}
+                <div id="map"></div>
+            {% endif %}
+            <div>
+                <h3>Responses</h3>
+                {% if case.responses.all %}
+                    <ul>
+                        {% for response in responses %}
+                            <li><a href="#">{{ response.response_date }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No responses yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if not case.location == '' %}
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script>
+            var map;
+            function Init()
+            {
+                // Create a Google coordinate object for where to initially center the map
+                //var latlng = new google.maps.LatLng( -6.1753924,106.8271528 );	// Monas, Jakarta
+
+                // Map options for how to display the Google map
+                //var mapOptions = { zoom: 12, center: latlng  };
+
+                // Show the Google map in the div with the attribute id 'map-canvas'.
+
+
+                var geocoder = new google.maps.Geocoder();
+                var address = '{{ case.location }}';
+                geocoder.geocode( { 'address': address }, function(results, status) {
+                    var addr_type = results[0].types[0];	// type of address inputted that was geocoded
+                    if ( status == google.maps.GeocoderStatus.OK ) {
+                        console.log(results[0].geometry.location);
+                        ShowLocation(results[0].geometry.location, address, addr_type);
+
+                    }
+                    else {
+                        alert("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            }
+
+            function ShowLocation( latlng, address, addr_type )
+            {
+                var mapOptions = { zoom: 15, center: latlng  };
+                // Center the map at the specified location
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                map.setCenter( latlng );
+
+                // Set the zoom level according to the address level of detail the user specified
+                switch ( addr_type )
+                {
+                    case "administrative_area_level_1"	: zoom = 6; break;		// user specified a state
+                    case "locality"						: zoom = 10; break;		// user specified a city/town
+                    case "street_address"				:
+                        zoom = 15;
+                        break;		// user specified a street address
+                }
+
+                // Place a Google Marker at the same location as the map center
+                // When you hover over the marker, it will display the title
+                var marker = new google.maps.Marker( {
+                    position: latlng,
+                    map: map,
+                    title: address
+                });
+
+                // Create an InfoWindow for the marker
+                var contentString = "" + address + "";	// HTML text to display in the InfoWindow
+                var infowindow = new google.maps.InfoWindow( { content: contentString } );
+
+                // Set event to display the InfoWindow anchored to the marker when the marker is clicked.
+                google.maps.event.addListener( marker, 'click', function() { infowindow.open( map, marker ); });
+            }
+        google.maps.event.addDomListener( window, 'load', Init );
+
+
+        </script>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'main_template.html' %}
+
+{% block main %}
+<h1>Invitations</h1>
+
+    {% if invitations %}
+    <table class="table">
+        <tr>
+            <th>Fullname</th>
+            <th>Email</th>
+        </tr>
+        {% for invitation in invitations %}
+            <tr>
+                <td>{{ invitation.fullname }}</td>
+                <td>{{ invitation.email }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No cases yet</p>
+    {% endif %}
+{% endblock %}

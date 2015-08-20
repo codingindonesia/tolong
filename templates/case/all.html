@@ -1,0 +1,22 @@
+{% extends 'main_template.html' %}
+
+{% block main %}
+<h1>All Cases</h1>
+
+    {% if cases %}
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Reported date</th>
+        </tr>
+        {% for case in cases %}
+            <tr>
+                <td><a href="{% url 'case-detail' case.id %}">{{ case.title }}</a></td>
+                <td>{{ case.reported_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No cases yet</p>
+    {% endif %}
+{% endblock %}
