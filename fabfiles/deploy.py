@@ -231,7 +231,7 @@ def cleanup_removed_directories():
 
 
 def symlink_settings_local():
-    temp_settings_local = os.path.join(env.TEMP_SRC_PATH, env.REPO_NAME, "settings_local.py")
+    temp_settings_local = os.path.join(env.TEMP_SRC_PATH, 'childsos', "settings_local.py")
     if not exists(temp_settings_local):
-        main_settings_local = os.path.join(env.SRC_PATH, env.REPO_NAME, "settings_local.py")
+        main_settings_local = os.path.join(env.SRC_PATH, 'childsos', "settings_local.py")
         sudo('ln -s {0} {1}'.format(main_settings_local, temp_settings_local), user='www-data')

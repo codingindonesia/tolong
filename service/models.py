@@ -53,7 +53,7 @@ class CaseResponse(models.Model):
     description = models.TextField()
 
     def __unicode__(self):
-        return '<p>%s: <br> %s</p>' % (self.responded_date.strftime("%b %d, %Y %H:%M:%S"), self.description)
+        return '%s: \n %s' % (self.responded_date.strftime("%b %d, %Y %H:%M:%S"), self.description)
 
 class Responder(models.Model):
     first_name = models.CharField(max_length=200)
