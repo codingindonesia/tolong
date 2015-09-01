@@ -179,7 +179,7 @@ def update_source_code(path=None, deploy=False):
         if not exists(env.DEPLOYMENT_KEY, use_sudo=True):
             create_deployment_key()
         if deploy:
-            git_cmd = 'git clone https://github.com/codingindonesia/tolong.git {0}'.format(path)
+            git_cmd = 'git clone git@github.com:codingindonesia/tolong.git {0}'.format(path)
         else:
             git_cmd = 'cd {0} && git pull'.format(path)
         require.files.directory(env.PROJECT_PATH, use_sudo=True)
