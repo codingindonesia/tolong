@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,8 +95,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'childsosdb',
         'USER': 'wwwuser',
-        'PASSWORD':'wwwpassword',
-        'HOST':'localhost'
+        'PASSWORD': 'wwwpassword',
+        'HOST': 'localhost'
     }
 }
 
@@ -124,3 +125,8 @@ STATICFILES_DIRS = (
 DATETIME_FORMAT = 'F d, Y H:g:s'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+try:
+    from settings_local import *  # noqa
+except ImportError:
+    pass
