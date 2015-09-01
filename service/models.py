@@ -28,10 +28,10 @@ class Case(models.Model):
         (5, 'Lainnya'),
     )
 
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     reported_by = models.CharField(max_length=200, null=True, blank= True)
-    reported_date = models.DateTimeField()
+    reported_date = models.DateTimeField(null=True, blank=True)
     phone = models.CharField(max_length=200, null= True, blank= True)
     email = models.CharField(max_length=200, null= True, blank= True)
     location = models.CharField(max_length=400, null=True, blank= True)
@@ -41,6 +41,19 @@ class Case(models.Model):
     case_type = models.CharField(max_length=20, null= True, blank= True)
     suspect = models.CharField(max_length=200,null=True, blank=True)
     victim = models.CharField(max_length=200,null=True,blank=True)
+
+
+class CaseResponse(models.Model):
+    full_name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    cell_phone = models.CharField(max_length=200)
+    severity_level = models.IntegerField()
+    responded_date = models.DateTimeField()
+    case_id = models.ForeignKey(Case, related_name='case_responses')
+    description = models.TextField()
+
+    def __unicode__(self):
+        return '<p>%s: <br> %s</p>' % (self.responded_date.strftime("%b %d, %Y %H:%M:%S"), self.description)
 
 class Responder(models.Model):
     first_name = models.CharField(max_length=200)

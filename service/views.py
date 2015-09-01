@@ -4,9 +4,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import TemplateView, View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
-from .models import Case, Responder, Response, Invitation
+from .models import Case, Responder, Response, Invitation, CaseResponse
 from .form import InvitationForm
-from .serializers import CaseSerializer, ResponderSerializer, ResponseSerializer
+from .serializers import CaseSerializer, ResponderSerializer, ResponseSerializer, CaseResponseSerializer
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -104,23 +104,18 @@ class CaseDetailView(TemplateView):
         return render(request, self.template_name, {'case': case})
 
 #api
-class CaseListApi(generics.ListCreateAPIView):
-    queryset = Case.objects.all()
-    serializer_class = CaseSerializer
-
-class CaseDetailApi(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Case.objects.all()
-    serializer_class = CaseSerializer
 
 class CasesViewSet(viewsets.ModelViewSet):
     queryset = Case.objects.all()
     serializer_class = CaseSerializer
 
+class CaseResponseViewSet(viewsets.ModelViewSet):
+    queryset = CaseResponse.objects.all()
+    serializer_class = CaseResponseSerializer
+
 class ResponseViewSet(viewsets.ModelViewSet):
     queryset = Response.objects.all();
     serializer_class = ResponseSerializer
 
-class ResponseApi(generics.ListCreateAPIView):
-    queryset = Response.objects.all()
-    serializer_class = ResponseSerializer
+
 

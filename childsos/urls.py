@@ -21,6 +21,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/cases',views.CasesViewSet)
 router.register(r'api/responses',views.ResponseViewSet)
+router.register(r'api/case_responses',views.CaseResponseViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
@@ -32,10 +33,8 @@ urlpatterns = [
     url(r'^logout/$', views.LogoutView.as_view(),name='logout'),
     url(r'^dashboard/$', views.DashboardView.as_view(),name='dashboard'),
     url(r'^invitations/$', views.InvitationsView.as_view(),name='invitations'),
-    url(r'^case/all/$', views.CaseAllView.as_view(),name='case-all'),
-    url(r'^case/(?P<case_id>\d+)/detail/$', views.CaseDetailView.as_view(case_id=None),name='case-detail'),
 
-    url(r'^api/case-all/$', views.CaseListApi.as_view(),name='api-case-all'),
-    url(r'^api/case-detail/(?P<pk>[0-9]+)/$', views.CaseDetailApi.as_view(),name='api-case-detail'),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration', include('rest_auth.registration.urls'))
 
 ]
